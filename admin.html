@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Конструктор Крафтів | Sunflower Admin</title>
+    <style>
+        :root { --accent: #ffcc00; --bg: #151515; --text: #eee; }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); padding: 40px; }
+        .admin-panel { background: #222; padding: 30px; border-radius: 15px; margin: 0 auto; max-width: 700px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        /* Сітка крафту */
+        .crafting-grid { 
+            display: grid; grid-template-columns: repeat(3, 100px); 
+            gap: 10px; justify-content: center; margin: 20px 0; 
+        }
+        .slot { 
+            width: 100px; height: 100px; background: #333; border: 2px dashed #444;
+            position: relative; cursor: pointer; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .slot:hover { border-color: var(--accent); }
+        .slot img { width: 100%; height: 100%; object-fit: contain; display: none; }
+        .slot span { font-size: 24px; color: #555; }
+        .slot input[type="file"] { display: none; }
+        
+        .slot-label { 
+            width: 100%; position: absolute; bottom: 0; background: rgba(0,0,0,0.7);
+            font-size: 10px; text-align: center; color: white; border: none; outline: none;
+        }
+
+        .result-area { text-align: center; margin-top: 30px; border-top: 1px solid #444; padding-top: 20px; }
+        input[type="text"], textarea { 
+            width: 100%; padding: 12px; margin: 8px 0; background: #2a2a2a; 
+            border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box;
+        }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        button { flex: 1; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-gen { background: var(--accent); color: black; }
+        .btn-copy { background: #444; color: white; }
+        
+        #json-output { 
+            margin-top: 20px; background: #000; color: #0f0; 
+            padding: 15px; border-radius: 5px; font-family: monospace; 
+            white-space: pre-wrap; display: none; font-size: 13px; border: 1px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-panel">
+    <h2 style="text-align: center;">🛠 Візуальний Конструктор</h2>
+    <p style="text-align: center; color: #888;">Клікни на слот, щоб додати іконку інгредієнта</p>
+    
+    <div class="crafting-grid" id="grid">
+        <script>
+            for (let i = 1; i <= 9; i++) {
+                document.write(`
+                    <div class="slot" onclick="document.getElementById('file-${i}').click()">
+                        <span id="plus-${i}">+</span>
+                        <img id="img-${i}">
+                        <input type="file" id="file-${i}" accept="image/*" onchange="previewImage(event, ${i})">
+                        <input type="text" class="slot-label" id="label-${i}" placeholder="Назва" onclick="event.stopPropagation()">
+                    </div>
+                `);
+            }
+        </script>
+    </div>
+
+    <div class="result-area">
+        <h3>Результат крафту</h3>
+        <input type="text" id="res-name" placeholder="Назва (напр. Невидима рамка) [cite: 23]">
+        <textarea id="res-desc" rows="3" placeholder="Опис властивостей [cite: 2, 13]"></textarea>
+        <input type="text" id="res-img" placeholder="Шлях до фінального зображення (напр. assets/items/frame.png)">
+        
+        <div class="btn-group">
+            <button class="btn-gen" onclick="generateJSON()">Згенерувати JSON</button>
+            <button class="btn-copy" onclick="copyToClipboard()">Копіювати</button>
+        </div>
+    </div>
+
+    <div id="json-output"></div>
+</div>
+
+<script>
+    // Функція попереднього перегляду фото
+    function previewImage(event, index) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById(`img-${index}`);
+                const plus = document.getElementById(`plus-${index}`);
+                img.src = e.target.result;
+                img.style.display = 'block';
+                plus.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function generateJSON() {
+        const ingredients = [];
+        for (let i = 1; i <= 9; i++) {
+            const label = document.getElementById(`label-${i}`).value.trim();
+            if (label !== "") {
+                ingredients.push(label);
+            }
+        }
+
+        const craftObject = {
+            name: document.getElementById('res-name').value || "Новий предмет",
+            description: document.getElementById('res-desc').value || "",
+            image: document.getElementById('res-img').value || "default.png",
+            ingredients: ingredients
+        };
+
+        const output = document.getElementById('json-output');
+        output.textContent = JSON.stringify(craftObject, null, 4);
+        output.style.display = 'block';
+    }
+
+    function copyToClipboard() {
+        const text = document.getElementById('json-output').textContent;
+        if (!text) return alert("Спочатку згенеруй код!");
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Код копіювався! Встав його у масив у файлі recipes.json");
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Sunflower.in.ua | Світ Minecraft</title>
+    <style>
+        /* Основні налаштування */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #fff;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://tse1.mm.bing.net/th/id/OIP.9GUAZY4M-dZ6N604Maf9HgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Контейнер з фоном Ancient City */
+        .main-content {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px;
+            background: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), 
+                        url('https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/09/Minecraft-Ancient-City-Warden-Statue.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #3c3c3c;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 0;
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        h1 {
+            font-size: 4em;
+            color: #ffcc00;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .server-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-pill {
+            background: rgba(60, 60, 60, 0.9);
+            padding: 10px 20px;
+            border: 2px solid #555;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        h2 {
+            color: #ffcc00;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        /* Стилізація карток та сітки крафту */
+        .crafting-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .craft-card {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 20px;
+            border: 2px solid #444;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .item-title {
+            color: #ffcc00;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: block;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* Інтерфейс верстака Minecraft */
+        .minecraft-ui {
+            background: #c6c6c6;
+            padding: 15px;
+            border: 3px solid #373737;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            border-radius: 2px;
+        }
+
+        .grid-3x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 46px);
+            grid-template-rows: repeat(3, 46px);
+            gap: 2px;
+            background: #8b8b8b;
+            padding: 2px;
+            border: 2px solid #373737;
+        }
+
+        .slot {
+    width: 46px;
+    height: 46px;
+    background: #8b8b8b;
+    border: 2px solid;
+    border-color: #373737 #ffffff #ffffff #373737;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Обов'язково для роботи absolute у count */
+}
+
+        .slot .count {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #000; /* Контур тексту як у грі */
+    pointer-events: none; /* Щоб цифри не перехоплювали кліки */
+    z-index: 2;
+}
+
+
+.slot img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+        .slot img, .result-slot img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated; /* Для чіткості піксель-арту */
+            object-fit: contain;
+        }
+
+        .arrow { 
+            font-size: 35px; 
+            color: #373737; 
+            font-weight: bold;
+            text-shadow: 1px 1px 0px #fff;
+        }
+
+        .result-slot {
+            width: 64px;
+            height: 64px;
+            background: #8b8b8b;
+            border: 2px solid;
+            border-color: #373737 #ffffff #ffffff #373737;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .result-slot img {
+            width: 48px;
+            height: 48px;
+        }
+
+        .count {
+            position: absolute;
+            bottom: 4px;
+            right: 6px;
+            font-size: 16px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        /* Інформаційні картки */
+        .grid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 20px;
+            border: 2px solid #444;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Sunflower.in.ua</h1>
+    <div class="server-info">
+        <div class="info-pill">IP: sunflower.in.ua</div>
+        <div class="info-pill">Версія: 1.21.11+</div>
+    </div>
+</header>
+
+<div class="main-content">
+    <section>
+        <h2>Про проект</h2>
+        <p>Ласкаво просимо на Sunflower.in.ua — український Minecraft сервер, що підтримує Java та Bedrock. Наша мета — відчути справжнє виживання з новими механіками та унікальними можливостями.</p>
+    </section>
+
+    <div class="grid-info">
+        <div class="card">
+            <h3>⚔️ РvР та Клани</h3>
+            <p>Кланові об'єднання для командної гри та спеціальна РvР-арена для тренувань і чесних боїв.</p>
+        </div>
+        <div class="card">
+            <h3>🌍 Кастомна генерація</h3>
+            <p>Нові біоми та печери завдяки кастомній генерації світу[cite: 15]. Досліджуйте світ та знаходьте унікальний лут.</p>
+        </div>
+    </div>
+
+    <h2>🛠 Унікальні Крафти</h2>
+    <div class="crafting-grid-container">
+        
+        <div class="craft-card">
+            <span class="item-title">Шаблон «Дикість»</span>
+            <div class="minecraft-ui">
+                <div class="grid-3x3">
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"></div>
+                    <div class="slot"><img src="assets/items/vine.png" alt="Vine"></div>
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"></div>
+                    
+                    <div class="slot"><img src="assets/items/vine.png" alt="Vine"></div>
+                    <div class="slot"><img src="assets/items/potion.png" alt="Potion"></div>
+                    <div class="slot"><img src="assets/items/vine.png" alt="Vine"></div>
+                    
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"></div>
+                    <div class="slot"><img src="assets/items/vine.png" alt="Vine"></div>
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"></div>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="result-slot">
+                    <img src="assets/items/wildness_template.png" alt="Wildness Template">
+                    <span class="count"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="craft-card">
+            <span class="item-title">Невидимі рамки </span>
+            <div class="minecraft-ui">
+                <div class="grid-3x3">
+                    
+                    <div class="slot"> <img src="assets/items/item_frame.png" alt="Frame"></div>
+
+                    <div class="slot"><img src="assets/items/item_frame.png" alt="Frame"></div>
+
+                    <div class="slot"><img src="assets/items/item_frame.png" alt="Frame"></div>
+
+                    <div class="slot">
+
+                        <img src="assets/items/item_frame.png" alt="Frame"></div>
+
+                        <div class="slot"><img src="assets/items/invisibility_potion.png" alt="Invis Potion"></div>
+
+                        <div class="slot"><img src="assets/items/item_frame.png" alt="Frame"></div>
+
+                    <div class="slot"><img src="assets/items/item_frame.png" alt="Frame"></div>
+                    
+                    <div class="slot"> <img src="assets/items/item_frame.png" alt="Frame"></div>
+                    
+                    <div class="slot"><img src="assets/items/item_frame.png" alt="Frame"></div>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="result-slot">
+                    <img src="assets/items/invisible_frame.png" alt="Invisible Frame">
+                    <span class="count">8</span> 
+                </div>
+            </div>
+        </div>
+
+        <div class="craft-card">
+            <span class="item-title">Талісман: Телекінез </span>
+            <div class="minecraft-ui">
+                <div class="grid-3x3">
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"><span class="count">64</span></div>
+                    <div class="slot"><img src="assets/items/nether_star.png" alt="Star"><span class="count">6</span></div>
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"><span class="count">64</span></div>
+                    
+                    
+                    <div class="slot"><img src="assets/items/golden_appleX16.png" alt="Gapple"><span class="count">16</span></div>
+                    <div class="slot"><img src="assets/items/Hard_core.png" alt=""></div>
+                    <div class="slot"><img src="assets/items/golden_appleX16.png" alt="Gapple"><span class="count">16</span></div>
+                    
+                    
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"><span class="count">64</span></div>
+                    <div class="slot"><img src="assets/items/nether_star.png" alt="Star"><span class="count">6</span></div>
+                    <div class="slot"><img src="assets/items/diamond.png" alt="Diamond"><span class="count">64</span></div>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="result-slot">
+                    <img src="assets/items/telekinesis_talisman.png" alt="Telekinesis">
+                    <span class="count"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="craft-card">
+            <span class="item-title">Талісман: Сила Амфібій </span>
+            <div class="minecraft-ui">
+                <div class="grid-3x3">
+                    <div class="slot"><img src="assets/items/emerald_block.png" alt="Emerald"></div>
+                    <div class="slot"><img src="assets/items/sea_lantern.png" alt="Lantern"></div>
+                    <div class="slot"><img src="assets/items/emerald_block.png" alt="Emerald"></div>
+                    
+                    <div class="slot"><img src="assets/items/sea_lantern.png" alt="Lantern"></div>
+                    <div class="slot"><img src="assets/items/heart_of_the_sea.png" alt="Heart"></div>
+                    <div class="slot"><img src="assets/items/sea_lantern.png" alt="Lantern"></div>
+                    
+                    <div class="slot"><img src="assets/items/emerald_block.png" alt="Emerald"></div>
+                    <div class="slot"><img src="assets/items/sea_lantern.png" alt="Lantern"></div>
+                    <div class="slot"><img src="assets/items/emerald_block.png" alt="Emerald"></div>
+                </div>
+                <div class="arrow">➔</div>
+                <div class="result-slot">
+                    <img src="assets/items/amphibian_talisman.png" alt="Amphibian Power">
+                    <span class="count"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Створено Хлібчик (Khlibchyk) | Всі права захищені</p>
+    <p>Команда: poleofattraction, Unluckism, kra4ka</p>
+</footer>
+
+</body>
+</html>

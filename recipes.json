@@ -1,0 +1,27 @@
+{
+  "custom_crafts": [
+    {
+      "name": "Шаблон «Дикість»",
+      "ingredients": ["Діаманти", "Лоза", "Зілля"],
+      "image": "wildness_template.png"
+    },
+    {
+      "name": "Невидимі рамки",
+      "result_count": 8,
+      "ingredients": ["Рамки", "Зілля невидимості"],
+      "image": "inc_frame.png"
+    },
+    {
+      "name": "Талісман: Сила амфібій",
+      "description": "Дає +2 блоки до стрибка",
+      "ingredients": ["Смарагдові блоки", "Морський ліхтар", "Серце моря"],
+      "image": "amphibian_talisman.png"
+    },
+    {
+      "name": "Талісман: Телекінез",
+      "description": "Автоматичний збір блоків в інвентар",
+      "ingredients": ["Незерит", "Золоті яблука", "Зірка Незера"],
+      "image": "telekinesis.png"
+    }
+  ]
+}
